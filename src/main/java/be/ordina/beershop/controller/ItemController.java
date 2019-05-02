@@ -1,7 +1,7 @@
 package be.ordina.beershop.controller;
 
-import be.ordina.beershop.domain.Product;
-import be.ordina.beershop.repository.ProductRepository;
+import be.ordina.beershop.product.JPAProduct;
+import be.ordina.beershop.product.ProductDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,19 +21,19 @@ import java.util.UUID;
 public class ItemController {
 
     @Autowired
-    private ProductRepository repository;
+    private ProductDAO repository;
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody Product item) {
+    public ResponseEntity<Void> create(@RequestBody JPAProduct item) {
         item.setId(UUID.randomUUID());
         item.setCreatedOn(LocalDateTime.now());
-        Product savedItem = repository.save(item);
+        JPAProduct savedItem = repository.save(item);
         return ResponseEntity.created(URI.create("/items/" + savedItem.getId())).build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getItem(@PathVariable("id") UUID id) {
-        Optional<Product> item = repository.findById(id);
+    public ResponseEntity<JPAProduct> getItem(@PathVariable("id") UUID id) {
+        Optional<JPAProduct> item = repository.findById(id);
         return item.map(it -> ResponseEntity.ok().body(it)).get();
     }
 }

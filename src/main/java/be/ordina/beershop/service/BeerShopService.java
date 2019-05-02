@@ -10,7 +10,9 @@ import be.ordina.beershop.order.JPAOrder;
 import be.ordina.beershop.order.LineItem;
 import be.ordina.beershop.order.OrderStatus;
 import be.ordina.beershop.order.OrderDAO;
-import be.ordina.beershop.repository.ProductRepository;
+import be.ordina.beershop.product.Discount;
+import be.ordina.beershop.product.JPAProduct;
+import be.ordina.beershop.product.ProductDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -37,7 +39,7 @@ public class BeerShopService {
     private static final int LEGAL_DRINKING_AGE = 18;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductDAO productRepository;
     @Autowired
     private OrderDAO orderRepository;
     @Autowired
@@ -147,7 +149,7 @@ public class BeerShopService {
         if (lineItem.getQuantity() == 0) {
             throw new RuntimeException("Quantity should not be 0");
         }
-        final Product product = productRepository.getOne(lineItem.getProduct().getId());
+        final JPAProduct product = productRepository.getOne(lineItem.getProduct().getId());
         final BigDecimal price = calculateProductPrice(product);
         final BigDecimal linePriceTotal = price.multiply(BigDecimal.valueOf(lineItem.getQuantity()));
         lineItem.setId(UUID.randomUUID());
@@ -155,7 +157,7 @@ public class BeerShopService {
         lineItem.setPrice(linePriceTotal);
     }
 
-    private BigDecimal calculateProductPrice(final Product product) {
+    private BigDecimal calculateProductPrice(final JPAProduct product) {
         final Discount activeDiscount = product
                 .getDiscounts()
                 .stream()

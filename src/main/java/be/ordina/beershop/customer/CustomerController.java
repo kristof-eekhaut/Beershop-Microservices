@@ -1,7 +1,7 @@
 package be.ordina.beershop.customer;
 
 import be.ordina.beershop.order.LineItem;
-import be.ordina.beershop.repository.ProductRepository;
+import be.ordina.beershop.product.ProductDAO;
 import be.ordina.beershop.service.BeerShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class CustomerController {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
-    private ProductRepository productRepository;
+    private ProductDAO productRepository;
 
     @PostMapping("/{customerId}/shopping-cart/line-items")
     public ResponseEntity<?> addItemToShoppingCart(@PathVariable UUID customerId, @RequestBody LineItem lineItem) {

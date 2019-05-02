@@ -1,30 +1,26 @@
 package be.ordina.beershop.customer;
 
 import be.ordina.beershop.common.Address;
+import be.ordina.beershop.common.domain.AbstractEntity;
 import be.ordina.beershop.domain.ShoppingCart;
 
 import java.time.LocalDate;
 
 import static java.util.Objects.requireNonNull;
 
-public class Customer {
+public class Customer extends AbstractEntity<CustomerId> {
 
-    private CustomerId id;
     private String name;
     private LocalDate birthDate;
     private ShoppingCart shoppingCart;
     private Address address;
 
     private Customer(Builder builder) {
-        id = requireNonNull(builder.id);
+        super(builder.id);
         name = requireNonNull(builder.name);
         birthDate = requireNonNull(builder.birthDate);
         shoppingCart = requireNonNull(builder.shoppingCart);
         address = requireNonNull(builder.address);
-    }
-
-    public CustomerId getId() {
-        return id;
     }
 
     public String getName() {

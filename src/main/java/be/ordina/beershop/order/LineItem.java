@@ -1,6 +1,6 @@
 package be.ordina.beershop.order;
 
-import be.ordina.beershop.domain.Product;
+import be.ordina.beershop.product.JPAProduct;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +21,7 @@ public class LineItem {
     @JoinColumn(name = "PRODUCT_ID")
     @OneToOne
     @NotNull
-    private Product product;
+    private JPAProduct product;
 
     @Column(name = "QUANTITY")
     @Min(value = 1)
@@ -38,11 +38,11 @@ public class LineItem {
         return id;
     }
 
-    public void setProduct(final Product product) {
+    public void setProduct(final JPAProduct product) {
         this.product = product;
     }
 
-    public Product getProduct() {
+    public JPAProduct getProduct() {
         return product;
     }
 

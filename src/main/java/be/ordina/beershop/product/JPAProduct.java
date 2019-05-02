@@ -1,18 +1,9 @@
-package be.ordina.beershop.domain;
+package be.ordina.beershop.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.validation.Valid;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,50 +11,35 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "PRODUCT")
-public class Product {
+public class JPAProduct {
 
     @Id
     @Column(name = "ID")
     private UUID id;
     @Column(name = "NAME")
-    @NotNull
     private String name;
     @Column(name = "QUANTITY")
     private int quantity;
     @Column(name = "PRICE")
-    @NotNull
-    @DecimalMin(value = "0.01")
     private BigDecimal price;
     @Column(name = "CREATED_ON")
-    @JsonIgnore
     private LocalDateTime createdOn;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Discount> discounts = new ArrayList<>();
     @Column(name = "ALCOHOL_PERCENTAGE")
-    @NotNull
     private BigDecimal alcoholPercentage;
-
     @Embedded
-    @Valid
     private Weight weight;
 
-    public Product() {
+    JPAProduct() {
     }
 
-    public Product(UUID id, String name, int quantity, BigDecimal price, BigDecimal alcoholPercentage) {
+    public JPAProduct(UUID id) {
         this.id = id;
-        this.name = name;
-        this.quantity = quantity;
-        this.price = price;
-        this.alcoholPercentage = alcoholPercentage;
     }
 
     public UUID getId() {
         return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -108,8 +84,8 @@ public class Product {
         this.weight = weight;
     }
 
-    public void addDiscount(final Discount discount) {
-        discounts.add(discount);
+    public void setDiscounts(final List<Discount> discounts) {
+        this.discounts = discounts;
     }
 
     public List<Discount> getDiscounts() {
@@ -122,16 +98,5 @@ public class Product {
 
     public void setAlcoholPercentage(final BigDecimal alcoholPercentage) {
         this.alcoholPercentage = alcoholPercentage;
-    }
-
-    @JsonProperty
-    public QuantityIndicator getQuantityIndicator() {
-        if(quantity == 0) {
-            return QuantityIndicator.SOLD_OUT;
-        } else if(quantity < 5) {
-            return QuantityIndicator.ALMOST_SOLD_OUT;
-        } else {
-            return QuantityIndicator.PLENTY_AVAILABLE;
-        }
     }
 }

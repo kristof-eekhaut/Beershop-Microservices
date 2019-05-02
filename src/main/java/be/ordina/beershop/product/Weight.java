@@ -1,4 +1,4 @@
-package be.ordina.beershop.domain;
+package be.ordina.beershop.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

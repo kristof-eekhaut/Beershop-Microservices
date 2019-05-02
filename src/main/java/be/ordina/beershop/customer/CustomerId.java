@@ -1,37 +1,13 @@
 package be.ordina.beershop.customer;
 
+import be.ordina.beershop.common.domain.SingleValueObject;
+
 import java.util.UUID;
 
-import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
-import static org.apache.commons.lang3.builder.HashCodeBuilder.reflectionHashCode;
-import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
-
-public class CustomerId {
-
-    private UUID value;
+public class CustomerId extends SingleValueObject<UUID> {
 
     private CustomerId(UUID value) {
-        this.value = requireNonNull(value);
-    }
-
-    public UUID getValue() {
-        return value;
-    }
-
-    @Override
-    public String toString() {
-        return reflectionToString(this);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return reflectionEquals(this, obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return reflectionHashCode(this);
+        super(value);
     }
 
     public static CustomerId customerId(UUID value) {

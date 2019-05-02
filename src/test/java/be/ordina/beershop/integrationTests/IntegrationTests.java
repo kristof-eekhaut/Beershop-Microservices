@@ -6,12 +6,12 @@ import be.ordina.beershop.customer.JPACustomer;
 import be.ordina.beershop.order.LineItem;
 import be.ordina.beershop.order.JPAOrder;
 import be.ordina.beershop.order.OrderStatus;
-import be.ordina.beershop.domain.Product;
-import be.ordina.beershop.domain.Weight;
-import be.ordina.beershop.domain.WeightUnit;
+import be.ordina.beershop.product.JPAProduct;
+import be.ordina.beershop.product.Weight;
+import be.ordina.beershop.product.WeightUnit;
 import be.ordina.beershop.customer.CustomerDAO;
 import be.ordina.beershop.order.OrderDAO;
-import be.ordina.beershop.repository.ProductRepository;
+import be.ordina.beershop.product.ProductDAO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +57,7 @@ public class IntegrationTests {
     @Autowired
     private CustomerDAO customerRepository;
     @Autowired
-    private ProductRepository productRepository;
+    private ProductDAO productRepository;
     @Autowired
     private OrderDAO orderRepository;
 
@@ -97,7 +97,7 @@ public class IntegrationTests {
                .andDo(print())
                .andExpect(status().isCreated());
 
-        final Product product = new Product();
+        final JPAProduct product = new JPAProduct();
         product.setId(productRepository.findAll().get(0).getId());
 
         final LineItem lineItem = new LineItem();

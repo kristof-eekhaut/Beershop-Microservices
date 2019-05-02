@@ -1,6 +1,7 @@
 package be.ordina.beershop.order;
 
 import be.ordina.beershop.common.Address;
+import be.ordina.beershop.common.domain.AbstractEntity;
 import be.ordina.beershop.customer.JPACustomer;
 
 import java.time.LocalDateTime;
@@ -9,9 +10,7 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
-public class Order {
-
-    private OrderId id;
+public class Order extends AbstractEntity<OrderId> {
 
     private JPACustomer customer;
 
@@ -26,17 +25,13 @@ public class Order {
     private String shipmentId;
 
     private Order(Builder builder) {
-        id = requireNonNull(builder.id);
+        super(builder.id);
         customer = requireNonNull(builder.customer);
         lineItems = requireNonNull(builder.lineItems);
         state = requireNonNull(builder.state);
         createdOn = builder.createdOn;
         address = builder.address;
         shipmentId = builder.shipmentId;
-    }
-
-    public OrderId getId() {
-        return id;
     }
 
     public JPACustomer getCustomer() {

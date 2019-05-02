@@ -1,4 +1,4 @@
-package be.ordina.beershop.domain;
+package be.ordina.beershop.product;
 
 public enum QuantityIndicator {
     SOLD_OUT,
