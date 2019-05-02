@@ -1,15 +1,15 @@
 package be.ordina.beershop.customer;
 
+import be.ordina.beershop.common.Address;
 import be.ordina.beershop.domain.ShoppingCart;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
 public class Customer {
 
-    private UUID id;
+    private CustomerId id;
     private String name;
     private LocalDate birthDate;
     private ShoppingCart shoppingCart;
@@ -23,7 +23,7 @@ public class Customer {
         address = requireNonNull(builder.address);
     }
 
-    public UUID getId() {
+    public CustomerId getId() {
         return id;
     }
 
@@ -48,7 +48,7 @@ public class Customer {
     }
 
     public static final class Builder {
-        private UUID id;
+        private CustomerId id;
         private String name;
         private LocalDate birthDate;
         private ShoppingCart shoppingCart = new ShoppingCart();
@@ -57,7 +57,7 @@ public class Customer {
         private Builder() {
         }
 
-        public Builder id(UUID id) {
+        public Builder id(CustomerId id) {
             this.id = id;
             return this;
         }

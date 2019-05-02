@@ -1,6 +1,6 @@
 package be.ordina.beershop.service;
 
-import be.ordina.beershop.domain.Order;
+import be.ordina.beershop.order.JPAOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class DeliveryService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public String requestShipment(final Order order) {
+    public String requestShipment(final JPAOrder order) {
         final BigDecimal totalWeight = order
                 .getLineItems()
                 .stream()

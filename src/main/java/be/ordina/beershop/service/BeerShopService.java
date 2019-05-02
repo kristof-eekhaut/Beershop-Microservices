@@ -1,13 +1,15 @@
 package be.ordina.beershop.service;
 
-import be.ordina.beershop.controller.OrderResource;
+import be.ordina.beershop.order.CreateOrder;
 import be.ordina.beershop.controller.PaymentResource;
 import be.ordina.beershop.controller.ShipmentResource;
 import be.ordina.beershop.customer.CustomerDAO;
 import be.ordina.beershop.customer.JPACustomer;
 import be.ordina.beershop.domain.*;
-import be.ordina.beershop.domain.Order;
-import be.ordina.beershop.repository.OrderRepository;
+import be.ordina.beershop.order.JPAOrder;
+import be.ordina.beershop.order.LineItem;
+import be.ordina.beershop.order.OrderStatus;
+import be.ordina.beershop.order.OrderDAO;
 import be.ordina.beershop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -37,7 +39,7 @@ public class BeerShopService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    private OrderRepository orderRepository;
+    private OrderDAO orderRepository;
     @Autowired
     private MailService mailService;
     @Autowired
@@ -45,18 +47,18 @@ public class BeerShopService {
     @Autowired
     private CustomerDAO customerRepository;
 
-    public Order createOrder(final OrderResource orderResource) {
-        final JPACustomer customer = customerRepository.getOne(orderResource.getCustomerId());
+    public JPAOrder createOrder(final CreateOrder createOrder) {
+        final JPACustomer customer = customerRepository.getOne(createOrder.getCustomerId());
         final List<LineItem> lineItems = customer.getShoppingCart().getLineItems();
 
-        final Order order = new Order();
+        final JPAOrder order = new JPAOrder();
         order.setId(UUID.randomUUID());
         order.setCustomer(customer);
         order.setState(OrderStatus.CREATED);
         order.setCreatedOn(LocalDateTime.now());
         order.setAddress(customer.getAddress());
         order.setLineItems(lineItems);
-        final Order savedOrder = orderRepository.save(order);
+        final JPAOrder savedOrder = orderRepository.save(order);
 
         order.getCustomer().getShoppingCart().clear();
         return savedOrder;
@@ -65,7 +67,7 @@ public class BeerShopService {
 
     @Transactional
     public void requestShipment(final ShipmentResource shipmentResource) {
-        final Optional<Order> maybeOrder = orderRepository.findById(shipmentResource.getOrderId());
+        final Optional<JPAOrder> maybeOrder = orderRepository.findById(shipmentResource.getOrderId());
         maybeOrder.ifPresent(order -> {
 
             if (order.getState() != OrderStatus.PAID) {
@@ -104,7 +106,7 @@ public class BeerShopService {
                        .ifPresent(order -> updateOrderStatus(order, OrderStatus.PAID));
     }
 
-    private void updateStock(final Order order) {
+    private void updateStock(final JPAOrder order) {
         order.getLineItems()
              .forEach(lineItem -> {
                  final int originalQuantity = lineItem.getProduct().getQuantity();
@@ -113,12 +115,12 @@ public class BeerShopService {
              });
     }
 
-    private void updateOrderStatus(final Order order, final OrderStatus newOrderStatus) {
+    private void updateOrderStatus(final JPAOrder order, final OrderStatus newOrderStatus) {
         order.setState(newOrderStatus);
         orderRepository.save(order);
     }
 
-    private boolean allLineItemsHaveEnoughStock(final Order order) {
+    private boolean allLineItemsHaveEnoughStock(final JPAOrder order) {
         return order.getLineItems()
                     .stream()
                     .allMatch(lineItem -> lineItem.getQuantity() <= lineItem.getProduct().getQuantity());

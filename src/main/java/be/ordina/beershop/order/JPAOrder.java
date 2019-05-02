@@ -1,6 +1,6 @@
-package be.ordina.beershop.domain;
+package be.ordina.beershop.order;
 
-import be.ordina.beershop.customer.Address;
+import be.ordina.beershop.common.Address;
 import be.ordina.beershop.customer.JPACustomer;
 
 import javax.persistence.CascadeType;
@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class JPAOrder {
 
     @Id
     @Column(name = "ID")
@@ -47,7 +47,7 @@ public class Order {
     @Column(name = "SHIPMENT_ID")
     private String shipmentId;
 
-    public Order() {
+    public JPAOrder() {
     }
 
     public UUID getId() {

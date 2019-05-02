@@ -1,6 +1,6 @@
 package be.ordina.beershop.customer;
 
-import be.ordina.beershop.domain.LineItem;
+import be.ordina.beershop.order.LineItem;
 import be.ordina.beershop.repository.ProductRepository;
 import be.ordina.beershop.service.BeerShopService;
 import org.springframework.beans.factory.annotation.Autowired;

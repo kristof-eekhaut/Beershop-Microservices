@@ -1,4 +1,6 @@
-package be.ordina.beershop.domain;
+package be.ordina.beershop.order;
+
+import be.ordina.beershop.domain.Product;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,16 +1,16 @@
-package be.ordina.beershop.controller;
+package be.ordina.beershop.order;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
-public class OrderResource {
+public class CreateOrder {
 
     private final UUID customerId;
 
     @JsonCreator
-    public OrderResource(@JsonProperty("customerId") final UUID customerId) {
+    public CreateOrder(@JsonProperty("customerId") final UUID customerId) {
         this.customerId = customerId;
     }
 

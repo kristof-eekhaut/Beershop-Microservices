@@ -1,16 +1,16 @@
 package be.ordina.beershop.integrationTests;
 
-import be.ordina.beershop.controller.OrderResource;
-import be.ordina.beershop.customer.Address;
+import be.ordina.beershop.order.CreateOrder;
+import be.ordina.beershop.common.Address;
 import be.ordina.beershop.customer.JPACustomer;
-import be.ordina.beershop.domain.LineItem;
-import be.ordina.beershop.domain.Order;
-import be.ordina.beershop.domain.OrderStatus;
+import be.ordina.beershop.order.LineItem;
+import be.ordina.beershop.order.JPAOrder;
+import be.ordina.beershop.order.OrderStatus;
 import be.ordina.beershop.domain.Product;
 import be.ordina.beershop.domain.Weight;
 import be.ordina.beershop.domain.WeightUnit;
 import be.ordina.beershop.customer.CustomerDAO;
-import be.ordina.beershop.repository.OrderRepository;
+import be.ordina.beershop.order.OrderDAO;
 import be.ordina.beershop.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -59,7 +59,7 @@ public class IntegrationTests {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    private OrderRepository orderRepository;
+    private OrderDAO orderRepository;
 
     private UUID customerId;
     private UUID productId;
@@ -113,12 +113,12 @@ public class IntegrationTests {
 
         mockMvc.perform(
                 post("/orders")
-                        .content(objectMapper.writeValueAsString(new OrderResource(customerId)))
+                        .content(objectMapper.writeValueAsString(new CreateOrder(customerId)))
                         .contentType(MediaType.APPLICATION_JSON))
                .andDo(print())
                .andExpect(status().isCreated());
 
-        final List<Order> orders = orderRepository.findAll();
+        final List<JPAOrder> orders = orderRepository.findAll();
 
         assertThat(orders.size()).isEqualTo(1);
         assertThat(orders.get(0)).satisfies(savedOrder -> {

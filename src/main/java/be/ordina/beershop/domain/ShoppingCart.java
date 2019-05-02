@@ -1,5 +1,7 @@
 package be.ordina.beershop.domain;
 
+import be.ordina.beershop.order.LineItem;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;

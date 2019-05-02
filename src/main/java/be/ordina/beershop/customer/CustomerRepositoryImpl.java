@@ -30,7 +30,7 @@ class CustomerRepositoryImpl implements CustomerRepository {
 
     private Customer mapToDomain(JPACustomer jpaCustomer) {
         return Customer.builder()
-                .id(jpaCustomer.getId())
+                .id(customerId(jpaCustomer.getId()))
                 .name(jpaCustomer.getName())
                 .birthDate(jpaCustomer.getBirthDate())
                 .shoppingCart(jpaCustomer.getShoppingCart())

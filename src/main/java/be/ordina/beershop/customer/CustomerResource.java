@@ -1,5 +1,6 @@
 package be.ordina.beershop.customer;
 
+import be.ordina.beershop.common.Address;
 import be.ordina.beershop.domain.ShoppingCart;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
