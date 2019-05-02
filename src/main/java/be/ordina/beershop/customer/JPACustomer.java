@@ -1,4 +1,6 @@
-package be.ordina.beershop.domain;
+package be.ordina.beershop.customer;
+
+import be.ordina.beershop.domain.ShoppingCart;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +16,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity(name = "CUSTOMER")
-public class Customer {
+public class JPACustomer {
 
     @Id
     @Column(name = "ID")

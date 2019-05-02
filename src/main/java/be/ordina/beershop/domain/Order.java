@@ -1,5 +1,8 @@
 package be.ordina.beershop.domain;
 
+import be.ordina.beershop.customer.Address;
+import be.ordina.beershop.customer.JPACustomer;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -27,7 +30,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
-    private Customer customer;
+    private JPACustomer customer;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LineItem> lineItems;
@@ -55,11 +58,11 @@ public class Order {
         this.id = id;
     }
 
-    public Customer getCustomer() {
+    public JPACustomer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(JPACustomer customer) {
         this.customer = customer;
     }
 

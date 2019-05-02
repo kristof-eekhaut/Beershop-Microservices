@@ -1,15 +1,15 @@
 package be.ordina.beershop.integrationTests;
 
 import be.ordina.beershop.controller.OrderResource;
-import be.ordina.beershop.domain.Address;
-import be.ordina.beershop.domain.Customer;
+import be.ordina.beershop.customer.Address;
+import be.ordina.beershop.customer.JPACustomer;
 import be.ordina.beershop.domain.LineItem;
 import be.ordina.beershop.domain.Order;
 import be.ordina.beershop.domain.OrderStatus;
 import be.ordina.beershop.domain.Product;
 import be.ordina.beershop.domain.Weight;
 import be.ordina.beershop.domain.WeightUnit;
-import be.ordina.beershop.repository.CustomerRepository;
+import be.ordina.beershop.customer.CustomerDAO;
 import be.ordina.beershop.repository.OrderRepository;
 import be.ordina.beershop.repository.ProductRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,7 +55,7 @@ public class IntegrationTests {
     @Autowired
     private TransactionTemplate transactionTemplate;
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerDAO customerRepository;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -80,7 +80,7 @@ public class IntegrationTests {
     @Test
     @Transactional
     public void test() throws Exception {
-        final Customer customer = new Customer();
+        final JPACustomer customer = new JPACustomer();
         customer.setId(customerId);
 
         final Weight weight = new Weight();
@@ -147,7 +147,7 @@ public class IntegrationTests {
         address.setStreet("Kerkstraat");
         address.setPostalCode("3000");
 
-        final Customer customer = new Customer();
+        final JPACustomer customer = new JPACustomer();
         customerId = UUID.randomUUID();
         customer.setId(customerId);
         customer.setName("Joske Vermeulen");

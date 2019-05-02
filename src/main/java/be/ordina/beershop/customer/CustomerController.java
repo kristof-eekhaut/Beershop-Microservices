@@ -1,7 +1,6 @@
-package be.ordina.beershop.controller;
+package be.ordina.beershop.customer;
 
 import be.ordina.beershop.domain.LineItem;
-import be.ordina.beershop.repository.CustomerRepository;
 import be.ordina.beershop.repository.ProductRepository;
 import be.ordina.beershop.service.BeerShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
+import static be.ordina.beershop.customer.CustomerId.customerId;
+
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
@@ -29,7 +30,7 @@ public class CustomerController {
 
     @PostMapping("/{customerId}/shopping-cart/line-items")
     public ResponseEntity<?> addItemToShoppingCart(@PathVariable UUID customerId, @RequestBody LineItem lineItem) {
-        if (customerRepository.findById(customerId).isEmpty()) {
+        if (customerRepository.findById(customerId(customerId)).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -43,7 +44,7 @@ public class CustomerController {
 
     @PutMapping("/{customerId}/shopping-cart/line-items/{lineItemId}")
     public ResponseEntity<Void> updateItemInShoppingCart(@PathVariable UUID customerId, @PathVariable String lineItemId, @RequestBody LineItem lineItem) {
-        if (customerRepository.findById(customerId).isEmpty()) {
+        if (customerRepository.findById(customerId(customerId)).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -53,7 +54,7 @@ public class CustomerController {
 
     @DeleteMapping("/{customerId}/shopping-cart/line-items/{lineItemId}")
     public ResponseEntity<Void> deleteItemFromShoppingCart(@PathVariable UUID customerId, @PathVariable UUID lineItemId) {
-        if (customerRepository.findById(customerId).isEmpty()) {
+        if (customerRepository.findById(customerId(customerId)).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 

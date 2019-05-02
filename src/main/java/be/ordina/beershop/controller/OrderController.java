@@ -1,8 +1,8 @@
 package be.ordina.beershop.controller;
 
-import be.ordina.beershop.domain.Customer;
+import be.ordina.beershop.customer.JPACustomer;
+import be.ordina.beershop.customer.CustomerDAO;
 import be.ordina.beershop.domain.Order;
-import be.ordina.beershop.repository.CustomerRepository;
 import be.ordina.beershop.repository.OrderRepository;
 import be.ordina.beershop.service.BeerShopService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +25,14 @@ public class OrderController {
     @Autowired
     private OrderRepository repository;
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerDAO customerRepository;
     @Autowired
     private BeerShopService beerShopService;
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody OrderResource orderResource) {
 
-        final Optional<Customer> maybeCustomer = customerRepository.findById(orderResource.getCustomerId());
+        final Optional<JPACustomer> maybeCustomer = customerRepository.findById(orderResource.getCustomerId());
         if(!maybeCustomer.isPresent()) {
             return ResponseEntity.badRequest().body("Unknown customer");
         }

@@ -1,4 +1,4 @@
-package be.ordina.beershop.domain;
+package be.ordina.beershop.customer;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

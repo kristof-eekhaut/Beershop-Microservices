@@ -3,14 +3,10 @@ package be.ordina.beershop.service;
 import be.ordina.beershop.controller.OrderResource;
 import be.ordina.beershop.controller.PaymentResource;
 import be.ordina.beershop.controller.ShipmentResource;
-import be.ordina.beershop.domain.Customer;
-import be.ordina.beershop.domain.Discount;
-import be.ordina.beershop.domain.LineItem;
+import be.ordina.beershop.customer.CustomerDAO;
+import be.ordina.beershop.customer.JPACustomer;
+import be.ordina.beershop.domain.*;
 import be.ordina.beershop.domain.Order;
-import be.ordina.beershop.domain.OrderStatus;
-import be.ordina.beershop.domain.Product;
-import be.ordina.beershop.domain.ShoppingCart;
-import be.ordina.beershop.repository.CustomerRepository;
 import be.ordina.beershop.repository.OrderRepository;
 import be.ordina.beershop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +43,10 @@ public class BeerShopService {
     @Autowired
     private DeliveryService deliveryService;
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerDAO customerRepository;
 
     public Order createOrder(final OrderResource orderResource) {
-        final Customer customer = customerRepository.getOne(orderResource.getCustomerId());
+        final JPACustomer customer = customerRepository.getOne(orderResource.getCustomerId());
         final List<LineItem> lineItems = customer.getShoppingCart().getLineItems();
 
         final Order order = new Order();
@@ -129,7 +125,7 @@ public class BeerShopService {
     }
 
     public void createItemInShoppingCart(final UUID customerId, final LineItem lineItem) {
-        final Customer customer = customerRepository.findById(customerId).get();
+        final JPACustomer customer = customerRepository.findById(customerId).get();
         initializeLineItem(lineItem);
         if (customerIsOldEnoughForProduct(lineItem, customer)) {
             throw new RuntimeException("No underage drinking allowed");
@@ -139,7 +135,7 @@ public class BeerShopService {
         customerRepository.save(customer);
     }
 
-    private boolean customerIsOldEnoughForProduct(final LineItem lineItem, final Customer customer) {
+    private boolean customerIsOldEnoughForProduct(final LineItem lineItem, final JPACustomer customer) {
         final boolean alcoholPercentageAboveThreshold = lineItem.getProduct().getAlcoholPercentage().compareTo( LEGAL_DRINKING_ALCOHOL_LIMIT) == 1;
         final boolean customerIsUnderaged = Period.between(customer.getBirthDate(), LocalDate.now()).getYears() < LEGAL_DRINKING_AGE;
         return alcoholPercentageAboveThreshold && customerIsUnderaged;
@@ -171,14 +167,14 @@ public class BeerShopService {
     }
 
     public void updateLineInShoppingCart(final UUID customerId, final LineItem lineItem) {
-        final Customer customer = customerRepository.getOne(customerId);
+        final JPACustomer customer = customerRepository.getOne(customerId);
         initializeLineItem(lineItem);
         customer.getShoppingCart().updateLineItem(lineItem);
         customerRepository.save(customer);
     }
 
     public void deleteLineInShoppingCart(final UUID customerId, final UUID lineItemId) {
-        final Customer customer = customerRepository.getOne(customerId);
+        final JPACustomer customer = customerRepository.getOne(customerId);
         customer.getShoppingCart().deleteLine(lineItemId);
         customerRepository.save(customer);
     }
