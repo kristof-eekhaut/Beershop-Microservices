@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: beershop-api-gateway
+
+zuul:
+  ignoredServices: '*'
+  routes:
+    beershop:
+      path: /**
+      url: http://localhost:8090
+
+beershop:
+  ui:
+    baseUrl: http://localhost:4200
