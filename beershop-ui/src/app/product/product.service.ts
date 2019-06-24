@@ -9,10 +9,10 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   getProducts() {
-    return this.http.get('http://localhost:8080/products')
+    return this.http.get('http://localhost:8080/beershop/products')
   }
 
   createProduct(data: Object) {
-    return this.http.post('http://localhost:8080/products', data)
+    return this.http.post('http://localhost:8080/beershop/products', data)
   }
 }

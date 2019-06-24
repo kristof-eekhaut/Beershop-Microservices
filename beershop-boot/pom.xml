@@ -11,7 +11,6 @@
 
     <artifactId>beershop-boot</artifactId>
 
-
     <dependencies>
         <dependency>
             <groupId>be.ordina</groupId>
@@ -31,10 +30,13 @@
             <artifactId>beershop-rest</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

@@ -6,7 +6,7 @@ zuul:
   ignoredServices: '*'
   routes:
     beershop:
-      path: /**
+      path: /beershop/**
       url: http://localhost:8090
 
 beershop:
